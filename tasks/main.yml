@@ -1,21 +1,24 @@
 ---
 
-- name: add bullseye repo
-  ansible.builtin.apt_repository:
-    repo: "{{ item }}"
-    update_cache: true
-    filename: bullseye
-  with_items:
-    - "deb http://apt01ber0.ber0.rosalux.org/debian/ bullseye main contrib non-free"
-    - "deb http://apt01ber0.ber0.rosalux.org/debiansecurity/ bullseye-security main contrib non-free"
-    - "deb http://apt01ber0.ber0.rosalux.org/debian/ bullseye-updates main contrib non-free"
+- name: debian 12 requires bullseye aka oldstable
+  when:
+    - ansible_distribution.lower() == "debian"
+    - ansible_distribution_major_version == 12
+  block:
 
-- name: set /etc/apt/preferences
-  ansible.builtin.copy:
-    src: apt-preferences
-    dest: /etc/apt/preferences
-    owner: root
-    mode: '0644'
+    - name: add bullseye repo
+      ansible.builtin.apt_repository:
+        repo: "{{ item }}"
+        update_cache: true
+        filename: bullseye
+      with_items: "{{ oldstable_repos }}"
+
+    - name: set /etc/apt/preferences
+      ansible.builtin.copy:
+        src: apt-preferences
+        dest: /etc/apt/preferences
+        owner: root
+        mode: '0644'
 
 - name: Install required packages for rundeck
   ansible.builtin.apt:

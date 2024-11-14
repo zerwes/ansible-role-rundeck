@@ -11,6 +11,14 @@ rundeck_deb: rundeck
 # rundeck_repo: "deb [signed-by=/usr/share/keyrings/rundeck.asc] https://packages.rundeck.com/pagerduty/rundeckpro/any/ any main"
 # rundeck_deb: rundeckpro-enterprise
 
+# required for debian 12
+oldstable_repos:
+  - deb http://deb.debian.org/debian bullseye main contrib non-free
+  - deb http://deb.debian.org/debian-security/ bullseye-security main contrib non-free
+  - deb http://deb.debian.org/debian bullseye-updates main contrib non-free
+  # - deb http://deb.debian.org/debian bullseye-proposed-updates main contrib non-free
+  # - deb http://deb.debian.org/debian bullseye-backports main contrib non-free
+
 # rundeck cfg reference
 # https://docs.rundeck.com/docs/administration/configuration/config-file-reference.html
 
