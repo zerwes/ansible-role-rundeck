@@ -27,9 +27,7 @@ rundeck_etc: /etc/rundeck
 rundeck_default:
   RDECK_HTTP_PORT: "{{ rundeck_port }}"
   RDECK_HTTPS_PORT: "{{ rundeck_port_https }}"
-# example:
-# rundeck_default:
-#   RDECK_JVM_SETTINGS: " -Xmx16384m -Xms512m -XX:MaxMetaspaceSize=256m -server"
+# RDECK_JVM_SETTINGS: " -Xmx16384m -Xms512m -XX:MaxMetaspaceSize=256m -server"
 
 # dict of config dicts:
 # target file in rundeck_etc: dict of properties
@@ -37,20 +35,16 @@ rundeck_default:
 rundeck_config:
   "rundeck-config.properties":  # target: /etc/rundeck/rundeck-config.properties
     "grails.serverURL": "http://{{ rundeck_address }}:{{ rundeck_port }}"
-# example:
 #   "dataSource.url": "jdbc:mysql://localhost/rundeck?autoReconnect=true&useSSL=false"
 #   "dataSource.username": rundeck
 #   "dataSource.password": "..."
 #   "dataSource.driverClassName": "org.mariadb.jdbc.Driver"
-
   "framework.properties":  # target: /etc/rundeck/framework.properties
     "framework.server.name": "{{ rundeck_hostname }}"
     "framework.server.hostname": "{{ rundeck_hostname }}"
     "framework.server.port": "{{ rundeck_port }}"
     "framework.server.url": "http://{{ rundeck_hostname }}:{{ rundeck_port }}"
-
   "ssl/ssl.properties": {}  # target: /etc/rundeck/ssl/ssl.properties
-
 
 # target /etc/rundeck/realm.properties
 rundeck_users: {}
