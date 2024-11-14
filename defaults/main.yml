@@ -5,10 +5,11 @@ rundeck_required_packages:
   - openjdk-11-jre-headless  # from oldstable
   - libmariadb-java
 
-
 rundeck_repo: "deb [signed-by=/usr/share/keyrings/rundeck.asc] https://packages.rundeck.com/pagerduty/rundeck/any/ any main"
 rundeck_deb: rundeck
-
+# for the eterprise edition use:
+# rundeck_repo: "deb [signed-by=/usr/share/keyrings/rundeck.asc] https://packages.rundeck.com/pagerduty/rundeckpro/any/ any main"
+# rundeck_deb: rundeckpro-enterprise
 
 # rundeck cfg reference
 # https://docs.rundeck.com/docs/administration/configuration/config-file-reference.html
