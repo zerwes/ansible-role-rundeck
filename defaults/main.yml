@@ -29,6 +29,8 @@ rundeck_port_https: 4443
 
 # base dir for config files
 rundeck_etc: /etc/rundeck
+# base dir
+rundeck_base: /var/lib/rundeck
 
 # target /etc/default/rundeckd read by /etc/rundeck/profile
 rundeck_default:
@@ -62,3 +64,11 @@ rundeck_users: {}
 #     roles: user,admin,architect,deploy,build
 #   admin:
 #     state: absent
+
+# rundeck_plugins
+rundeck_plugins: {}
+# see https://github.com/rundeck-plugins
+# example:
+# rundeck_plugins:
+#   "ansible-plugin.jar": "https://github.com/rundeck-plugins/ansible-plugin/releases/download/v4.0.5/ansible-plugin-4.0.5.jar"
+#   "another-plugin.zip": absent  # remove plugin

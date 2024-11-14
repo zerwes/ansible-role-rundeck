@@ -72,3 +72,22 @@
     state: "{{ item.value.state | default('present') }}"
   notify: rundeck service
   with_dict: "{{ rundeck_users | default({}) }}"
+
+- name: install plugins
+  ansible.builtin.get_url:
+    url: "{{ item.value }}"
+    dest: "{{ rundeck_base }}/libext/{{ item.key }}"
+    mode: '0644'
+    owner: rundeck
+    group: rundeck
+  notify: rundeck service
+  with_dict: "{{ rundeck_plugins }}"
+  when: item.value != "absent"
+
+- name: remove plugins
+  ansible.builtin.file:
+    path: "{{ rundeck_base }}/libext/{{ item.key }}"
+    state: absent
+  notify: rundeck service
+  with_dict: "{{ rundeck_plugins }}"
+  when: item.value == "absent"
