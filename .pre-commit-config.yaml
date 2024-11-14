@@ -1,0 +1,30 @@
+---
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.1.0
+    hooks:
+      - id: check-merge-conflict
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-executables-have-shebangs
+      - id: check-added-large-files
+      - id: detect-private-key
+      #- id: check-yaml # we use yamllint
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.35.1
+    hooks:
+      - id: yamllint
+        files: \.(yaml|yml)$
+  - repo: https://github.com/ansible-community/ansible-lint
+    rev: v24.9.2
+    hooks:
+      - id: ansible-lint
+        files: \.(yaml|yml|j2)$
+        pass_filenames: false
+        always_run: true
+        additional_dependencies:
+          - ansible-core==2.17.6
+          - ansible==10.6.0
+          - jmespath
