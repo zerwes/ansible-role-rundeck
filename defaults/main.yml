@@ -22,7 +22,6 @@ oldstable_repos:
 # rundeck cfg reference
 # https://docs.rundeck.com/docs/administration/configuration/config-file-reference.html
 
-rundeck_address: "{{ ansible_all_ipv4_addresses[0] | default('127.0.0.1') }}"
 rundeck_hostname: "{{ ansible_fqdn }}"
 rundeck_port: 4440
 rundeck_port_https: 4443
@@ -42,7 +41,7 @@ rundeck_default:
 # can be extendet to other existing files
 rundeck_config:
   "rundeck-config.properties":  # target: /etc/rundeck/rundeck-config.properties
-    "grails.serverURL": "http://{{ rundeck_address }}:{{ rundeck_port }}"
+    "grails.serverURL": "http://{{ rundeck_hostname }}:{{ rundeck_port }}"
 #   "dataSource.url": "jdbc:mysql://localhost/rundeck?autoReconnect=true&useSSL=false"
 #   "dataSource.username": rundeck
 #   "dataSource.password": "..."
