@@ -1,0 +1,11 @@
+Package: *
+Pin: release a=stable
+Pin-Priority: 900
+
+Package: *
+Pin: release a=bullseye
+Pin-Priority: 50
+
+Package: *
+Pin: release a=oldstable
+Pin-Priority: 50

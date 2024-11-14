@@ -1,0 +1,9 @@
+---
+
+- name: rundeck service  # noqa no-changed-when
+  ansible.builtin.service:
+    name: rundeckd
+    state: restarted
+    daemon_reload: true
+  listen:
+    - rundeck service

@@ -1,0 +1,10 @@
+---
+
+- name: configure rundeck properties in {{ rdeckpropfile }}
+  ansible.builtin.lineinfile:
+    path: "{{ rundeck_etc }}/{{ rdeckpropfile }}"
+    line: "{{ item.key }} = {{ item.value }}"
+    regex: "^{{ item.key }} *=.*"
+    insertafter: "^{{ ansible_loop.previtem.key | default(omit) }} =.*"
+  notify: rundeck service
+  with_dict: "{{ rdeckpropcfg | default({}) }}"

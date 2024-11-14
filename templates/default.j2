@@ -1,0 +1,6 @@
+# {{ ansible_managed }}
+# /etc/default/rundeckd read by /etc/rundeck/profile
+
+{% for k, v  in rundeck_default.items() %}
+{{ k }}="{{ v }}"
+{% endfor %}

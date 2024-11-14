@@ -1,0 +1,62 @@
+---
+
+rundeck_required_packages:
+  # - openjdk-17-jre-headless  # deb 12 defaults, but not working with rundeck
+  - openjdk-11-jre-headless  # from oldstable
+  - libmariadb-java
+
+
+rundeck_repo: "deb [signed-by=/usr/share/keyrings/rundeck.asc] https://packages.rundeck.com/pagerduty/rundeck/any/ any main"
+rundeck_deb: rundeck
+
+
+# rundeck cfg reference
+# https://docs.rundeck.com/docs/administration/configuration/config-file-reference.html
+
+rundeck_address: "{{ ansible_all_ipv4_addresses[0] | default('127.0.0.1') }}"
+rundeck_hostname: "{{ ansible_fqdn }}"
+rundeck_port: 4440
+rundeck_port_https: 4443
+# for configuring ssl, see https://docs.rundeck.com/docs/administration/security/ssl.html
+
+# base dir for config files
+rundeck_etc: /etc/rundeck
+
+# target /etc/default/rundeckd read by /etc/rundeck/profile
+rundeck_default:
+  RDECK_HTTP_PORT: "{{ rundeck_port }}"
+  RDECK_HTTPS_PORT: "{{ rundeck_port_https }}"
+# example:
+# rundeck_default:
+#   RDECK_JVM_SETTINGS: " -Xmx16384m -Xms512m -XX:MaxMetaspaceSize=256m -server"
+
+# dict of config dicts:
+# target file in rundeck_etc: dict of properties
+# can be extendet to other existing files
+rundeck_config:
+  "rundeck-config.properties":  # target: /etc/rundeck/rundeck-config.properties
+    "grails.serverURL": "http://{{ rundeck_address }}:{{ rundeck_port }}"
+# example:
+#   "dataSource.url": "jdbc:mysql://localhost/rundeck?autoReconnect=true&useSSL=false"
+#   "dataSource.username": rundeck
+#   "dataSource.password": "..."
+#   "dataSource.driverClassName": "org.mariadb.jdbc.Driver"
+
+  "framework.properties":  # target: /etc/rundeck/framework.properties
+    "framework.server.name": "{{ rundeck_hostname }}"
+    "framework.server.hostname": "{{ rundeck_hostname }}"
+    "framework.server.port": "{{ rundeck_port }}"
+    "framework.server.url": "http://{{ rundeck_hostname }}:{{ rundeck_port }}"
+
+  "ssl/ssl.properties": {}  # target: /etc/rundeck/ssl/ssl.properties
+
+
+# target /etc/rundeck/realm.properties
+rundeck_users: {}
+# example:
+# rundeck_users:
+#   eckigundrund:
+#     pw: "MD5:..."
+#     roles: user,admin,architect,deploy,build
+#   admin:
+#     state: absent

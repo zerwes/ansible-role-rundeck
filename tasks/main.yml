@@ -1,0 +1,71 @@
+---
+
+- name: add bullseye repo
+  ansible.builtin.apt_repository:
+    repo: "{{ item }}"
+    update_cache: true
+    filename: bullseye
+  with_items:
+    - "deb http://apt01ber0.ber0.rosalux.org/debian/ bullseye main contrib non-free"
+    - "deb http://apt01ber0.ber0.rosalux.org/debiansecurity/ bullseye-security main contrib non-free"
+    - "deb http://apt01ber0.ber0.rosalux.org/debian/ bullseye-updates main contrib non-free"
+
+- name: set /etc/apt/preferences
+  ansible.builtin.copy:
+    src: apt-preferences
+    dest: /etc/apt/preferences
+    owner: root
+    mode: '0644'
+
+- name: Install required packages for rundeck
+  ansible.builtin.apt:
+    name: "{{ rundeck_required_packages }}"
+    update_cache: true
+    install_recommends: false
+
+- name: Copy rundeck apt keys
+  ansible.builtin.copy:
+    src: gpgkey
+    dest: /usr/share/keyrings/rundeck.asc
+    owner: root
+    mode: '0644'
+
+- name: rundeck repo
+  ansible.builtin.apt_repository:
+    repo: "{{ rundeck_repo }}"
+    update_cache: true
+    filename: rundeck
+
+- name: install rundeck
+  ansible.builtin.apt:
+    name: "{{ rundeck_deb }}"
+    update_cache: true
+  notify: rundeck service
+
+- name: install rundeck defaults
+  ansible.builtin.template:
+    src: default.j2
+    dest: /etc/default/rundeckd
+    owner: root
+    group: rundeck
+    mode: '0644'
+  notify: rundeck service
+
+- name: configure rundeck properties
+  ansible.builtin.include_tasks: rundeckproperties.yml
+  vars:
+    rdeckpropfile: "{{ _rdeckconfig.key }}"
+    rdeckpropcfg: "{{ _rdeckconfig.value }}"
+  with_dict:
+    - "{{ rundeck_config | default({}) }}"
+  loop_control:
+    loop_var: _rdeckconfig
+
+- name: configure rundeck users and realms
+  ansible.builtin.lineinfile:
+    path: /etc/rundeck/realm.properties
+    line: "{{ item.key }}:{{ item.value.pw | default('.*') }},{{ item.value.roles | default('.*') }}"
+    regex: "^{{ item.key }}:.*"
+    state: "{{ item.value.state | default('present') }}"
+  notify: rundeck service
+  with_dict: "{{ rundeck_users | default({}) }}"
