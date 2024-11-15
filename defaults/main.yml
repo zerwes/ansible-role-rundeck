@@ -21,6 +21,9 @@ oldstable_repos:
 
 # rundeck cfg reference
 # https://docs.rundeck.com/docs/administration/configuration/config-file-reference.html
+#
+# passwords etc. can be bcrypted/obfuscate/hashed using
+# java -jar /var/lib/rundeck/bootstrap/rundeck-5.7.0-20241021.war --encryptpwd Jetty
 
 rundeck_hostname: "{{ ansible_fqdn }}"
 rundeck_port: 4440
@@ -44,6 +47,7 @@ rundeck_default:
 rundeck_config:
   "rundeck-config.properties":  # target: /etc/rundeck/rundeck-config.properties
     "grails.serverURL": "http://{{ rundeck_hostname }}:{{ rundeck_port }}"
+#   "grails.serverURL": "https://{{ rundeck_hostname }}:{{ rundeck_port_https }}"
 #   "dataSource.url": "jdbc:mysql://localhost/rundeck?autoReconnect=true&useSSL=false"
 #   "dataSource.username": rundeck
 #   "dataSource.password": "..."
@@ -53,7 +57,14 @@ rundeck_config:
     "framework.server.hostname": "{{ rundeck_hostname }}"
     "framework.server.port": "{{ rundeck_port }}"
     "framework.server.url": "http://{{ rundeck_hostname }}:{{ rundeck_port }}"
+#   "framework.server.port": "{{ rundeck_port_https }}"
+#   "framework.server.url": "https://{{ rundeck_hostname }}:{{ rundeck_port_https }}"
   "ssl/ssl.properties": {}  # target: /etc/rundeck/ssl/ssl.properties
+#   "keystore": "{{ rundeck_etc }}/ssl/keystore"
+#   "keystore.password": "OBF:..."
+#   "key.password" "OBF:"
+#   "truststore": "{{ rundeck_etc }}/ssl/truststore"
+#   "truststore.password": "OBF:.."
 
 # target /etc/rundeck/realm.properties
 rundeck_users: {}
