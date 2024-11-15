@@ -91,3 +91,13 @@
   notify: rundeck service
   with_dict: "{{ rundeck_plugins }}"
   when: item.value == "absent"
+
+- name: install additional files
+  ansible.builtin.copy:
+    src: "{{ item.key}}"
+    dest: "{{ item.value }}"
+    mode: '0640'
+    owner: rundeck
+    group: rundeck
+  notify: rundeck service
+  with_dict: "{{ rundeck_files }}"

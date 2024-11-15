@@ -72,3 +72,11 @@ rundeck_plugins: {}
 # rundeck_plugins:
 #   "ansible-plugin.jar": "https://github.com/rundeck-plugins/ansible-plugin/releases/download/v4.0.5/ansible-plugin-4.0.5.jar"
 #   "another-plugin.zip": absent  # remove plugin
+
+# dict of files to install in addition
+# src file => dest file
+# all files will have rundec:rundeck owner w/ 0640 perms
+rundeck_files: {}
+# example:
+# rundeck_files:
+#   "rundeck-keystore": "{{ rundeck_etc }}/ssl/keystore"
