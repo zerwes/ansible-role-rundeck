@@ -6,3 +6,5 @@
 install [rundeck](https://www.rundeck.com/) on debian based hosts.
 
 this playbook is focused on the community edition, but might be used for the enterprise edition too.
+
+vars: [defaults/main.yml](defaults/main.yml)
