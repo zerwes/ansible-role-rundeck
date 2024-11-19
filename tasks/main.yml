@@ -101,3 +101,13 @@
     group: rundeck
   notify: rundeck service
   with_dict: "{{ rundeck_files }}"
+
+- name: install additional files from templates
+  ansible.builtin.template:
+    src: "{{ item.key}}"
+    dest: "{{ item.value }}"
+    mode: '0640'
+    owner: rundeck
+    group: rundeck
+  notify: rundeck service
+  with_dict: "{{ rundeck_template_files }}"

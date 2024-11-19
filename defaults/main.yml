@@ -91,3 +91,9 @@ rundeck_files: {}
 # example:
 # rundeck_files:
 #   "rundeck-keystore": "{{ rundeck_etc }}/ssl/keystore"
+
+# dict of files to install from templates
+rundeck_template_files: {}
+# example:
+# rundeck_template_files:
+#   "jaas-ldap.conf.j2": "{{ rundeck_etc }}/jaas-ldap.conf"
